@@ -1,14 +1,16 @@
 import express from "express";
-import router from "./router.js"
 import dotenv from "dotenv"
+
+import rolsRouetes from './routes/rols.routes.js'
 
 dotenv.config()
 
 const app = express();
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-app.use(router);
+app.use(rolsRouetes);
 
 export default app;
