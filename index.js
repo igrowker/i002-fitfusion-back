@@ -21,10 +21,10 @@ const serverPort = process.env.serverPort;
 
 async function main() {
   try {
-    await sequelize.sync()
+    await sequelize.sync({force: false })
     console.log("Connection has been established successfully.");
     app.listen(serverPort)
-    console.log("Server is listening on port " + serverPort);
+    console.log("Server is listening " + serverPort);
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
