@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import rolsRoutes from './routes/rols.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/user.routes.js'
-
+import classRoutes from './routes/class.routes.js'
 dotenv.config();
 
 const app = express();
@@ -15,5 +15,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/rol', rolsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/class', classRoutes)
 
 export default app;
