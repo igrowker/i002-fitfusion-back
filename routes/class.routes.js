@@ -3,6 +3,8 @@ import * as classf from '../controllers/class.controller.js'
 
 const router = Router();
 
-router.get("/getAllClasses", classf.getAllClasses);
+router.get('/getAllClasses', classf.getAllClasses);
+router.get('/:id', classf.getClassById)
+router.patch('/:id', classf.updateClassByID)
 
 export default router;
