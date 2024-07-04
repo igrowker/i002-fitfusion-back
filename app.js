@@ -9,6 +9,7 @@ import classesRoutes from './routes/class.routes.js'
 import statusClassRoutes from './routes/statusClass.routes.js'
 import typeClassRoutes from './routes/typeClass.routes.js'
 import levelClassRutes from './routes/levelClas.routes.js'
+import paymentsRoutes from './routes/payments.routes.js'
 
 dotenv.config();
 
@@ -25,5 +26,7 @@ app.use('/api/classes', classesRoutes);
 app.use('/api/statusClass', statusClassRoutes);
 app.use('/api/typeClass', typeClassRoutes);
 app.use('/api/levelClass', levelClassRutes);
+app.use('/api/classes', classesRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 export default app;
