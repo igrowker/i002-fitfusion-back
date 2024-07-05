@@ -9,8 +9,6 @@ export const sendEmail = async (req, res) => {
     try {
         const { to, subject, text } = req.body;
 
-        console.log('req.body ' , req.body)
-
         const transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
