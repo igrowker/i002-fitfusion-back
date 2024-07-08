@@ -9,6 +9,7 @@ import ExistingUserException from '../exceptions/User/ExistingUserException.js';
 import SignUpSuccessfulException from '../exceptions/Auth/SignUpSuccessfulException.js';
 import UserNotFoundException from '../exceptions/User/UserNotFoundException.js';
 import InvalidCredentialsException from '../exceptions/Auth/InvalidCredentialsException.js'
+import TeacherRepository from '../Repositories/TeacherRepository.js';
 
 const saltRounds = 10;
 
@@ -16,6 +17,7 @@ class AuthService {
 
     constructor() {
         this.authRepository = AuthRepository; 
+        this.teacherRepository = TeacherRepository;
         
     }
     
@@ -32,7 +34,11 @@ class AuthService {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
         
             const newUser = new LoginRequest(name, email, hashedPassword, rolId);
-            await this.authRepository.CreateAsync(newUser);
+            const user = await this.authRepository.CreateAsync(newUser);
+            if(rolId === 1) {
+
+                await this.teacherRepository.CreateAsync({UserId: user.UserId});
+            }
         
             return { message: new SignUpSuccessfulException().message};
 
