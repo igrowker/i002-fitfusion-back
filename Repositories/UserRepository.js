@@ -28,28 +28,3 @@ class UserRepository {
 }
 
 export default new UserRepository();
-
-// import User from '../models/User.js';
-// import Teacher from '../models/Teacher.js';
-// import Rol from '../models/Rol.js';
-
-// class UserRepository {
-//   async findById(userId, options = {}) {
-//     return await User.findByPk(userId, {
-//       attributes: { exclude: ['Password'] },
-//       include: [
-//         {
-//           model: Rol,
-//           as: 'Rol',
-//         },
-//         {
-//           model: Teacher,
-//           as: 'Teacher',
-//         },
-//       ],
-//      ...options,
-//     });
-//   }
-// }
-
-// export default new UserRepository();
