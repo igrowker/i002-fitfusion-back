@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/database.js';
-import User from './User.js';
+import User from './User.js'; // Importa el modelo User después de su definición
 
 const Teacher = sequelize.define('Teacher', {
     TeacherId: {
@@ -34,6 +34,7 @@ const Teacher = sequelize.define('Teacher', {
 }, {
   timestamps: false
 });
+
 
 Teacher.belongsTo(User, { foreignKey: 'UserId' });
 
