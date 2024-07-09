@@ -20,10 +20,20 @@ class UserRepository {
 
     async updateUser(userId, updatedData) {
         const user = await User.findByPk(userId);
-        if (user) {
+
+        if (user && user.RolId === 2) {
             await user.update(updatedData);
+            return user;
+
+        } else if (user && user.RolId === 1) {
+            const {TeacherId} = updatedData.teacherInfo
+            const teacher = await Teacher.findByPk(TeacherId)
+
+            await user.update(updatedData);
+            await teacher.update(updatedData.teacherInfo)
+
+            return {user, teacher}
         }
-        return user;
     }
 }
 
