@@ -66,6 +66,13 @@ const User = sequelize.define('User', {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
+  Image: {
+    type: DataTypes.STRING(300),
+    allowNull: true
+  },
+  Calories: {
+    type: DataTypes.INTEGER
+  },
 }, {
   timestamps: false,
 });

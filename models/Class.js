@@ -51,7 +51,11 @@ const Class = sequelize.define('Class', {
     },
     Price: {
         type: DataTypes.DECIMAL(10, 2)
-    }
+    },
+    Image: {
+        type: DataTypes.STRING(300),
+        allowNull: true
+    },
 }, {
   timestamps: false
 });
