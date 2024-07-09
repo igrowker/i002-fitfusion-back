@@ -4,6 +4,11 @@ import ClassService from '../services/ClassService.js';
 import ClassAlreadyExistsException from '../exceptions/Class/ClassAlreadyExistsException.js';
 import FailedCreateClassException from "../exceptions/Class/FailedCreateClassException.js";
 import { validationResult } from 'express-validator';
+import Teacher from "../models/Teacher.js";
+import LevelClass from "../models/LevelClass.js";
+import TypeClass from "../models/TypeClass.js";
+import StatusClass from "../models/StatusClass.js";
+import User from "../models/User.js";
 
 export const createClass = async (req, res) => {
   const { title, description, teacherId, levelClassId, typeClassId, calories, statusId, price } = req.body;
@@ -31,7 +36,33 @@ export const createClass = async (req, res) => {
 
 export async function getAllClasses(req, res) {
   try {
-    const classes = await Class.findAll();
+    const classes = await Class.findAll({
+      attributes: { exclude: ['TeacherId', 'LevelClassId', 'TypeClassId', 'StatusId'] },
+      include: [
+        {
+          model: Teacher,
+          include: [
+            {
+              model: User,
+              attributes: ['Name'], // Atributo que deseas incluir
+            },
+          ],
+          attributes: ['ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: LevelClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: TypeClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: StatusClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+      ],
+    });
     if (!classes.length) {
       return res
         .status(HttpStatusCode.NOT_FOUND)
@@ -49,7 +80,33 @@ export async function getAllClasses(req, res) {
 export async function getClassById(req, res) {
   try {
     const { id } = req.params;
-    const classd = await Class.findByPk(id);
+    const classd = await Class.findByPk(id, {
+      attributes: { exclude: ['TeacherId', 'LevelClassId', 'TypeClassId', 'StatusId'] },
+      include: [
+        {
+          model: Teacher,
+          include: [
+            {
+              model: User,
+              attributes: ['Name'], // Atributo que deseas incluir
+            },
+          ],
+          attributes: ['ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: LevelClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: TypeClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+        {
+          model: StatusClass,
+          attributes: ['Description'], // Ajusta los atributos que deseas incluir
+        },
+      ],
+    });
     if (!classd) {
       return res
         .status(HttpStatusCode.NOT_FOUND)
