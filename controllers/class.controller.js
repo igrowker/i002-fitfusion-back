@@ -9,6 +9,9 @@ import LevelClass from "../models/LevelClass.js";
 import TypeClass from "../models/TypeClass.js";
 import StatusClass from "../models/StatusClass.js";
 import User from "../models/User.js";
+import Weekday from "../models/Weekday.js";
+import ClassTime from "../models/ClassTime.js";
+import ClassSchedule from "../models/ClassSchedule.js";
 
 export const createClass = async (req, res) => {
   const { title, description, teacherId, levelClassId, typeClassId, calories, statusId, price } = req.body;
@@ -76,6 +79,62 @@ export async function getAllClasses(req, res) {
       .json({ message: "Internal server error" });
   }
 }
+
+export async function getClassesByDay (req, res) {
+
+  const {weekdayId} = req.body
+
+  try {
+    const classes = await ClassSchedule.findAll({
+        where: { WeekdayId: weekdayId },
+        include: [
+            {
+                model: Class,
+                include: [
+                    {
+                        model: Teacher,
+                        include: {
+                            model: User,
+                            attributes: ['Name'], // Atributo que deseas incluir
+                        },
+                        attributes: ['ProfessionalTitle', 'Bio', 'YearsExperience'],
+                    },
+                    {
+                        model: LevelClass,
+                        attributes: ['Description'],
+                    },
+                    {
+                        model: TypeClass,
+                        attributes: ['Description'],
+                    },
+                    {
+                        model: StatusClass,
+                        attributes: ['Description'],
+                    },
+                ],
+                attributes: ['Title', 'Description', 'Calories', 'Price', 'Image'],
+            },
+            {
+                model: Weekday,
+                attributes: ['Name'],
+            },
+            {
+                model: ClassTime,
+                attributes: ['Time'],
+            }
+        ]
+    });
+
+
+    return res.status(HttpStatusCode.OK).json(classes);
+
+} catch (error) {
+  return res
+  .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+  .json({ message: "Internal server error" });
+}
+}
+
 
 export async function getClassById(req, res) {
   try {
