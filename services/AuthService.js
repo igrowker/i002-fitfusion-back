@@ -24,25 +24,29 @@ class AuthService {
     async singUp(name, email, password, rolId) {
 
         try {
-
+            console.log("Verificando existencia de usuario...");
             const existingUser = await this.authRepository.VerifyDataExistenceAsync({ Email: email });
 
             if (existingUser) {
+                console.log("Usuario existente encontrado");
                 return {message: new ExistingUserException().message};
             }
-        
+            
+            console.log("Hasheando contraseña...");
             const hashedPassword = await bcrypt.hash(password, saltRounds);
         
             const newUser = new LoginRequest(name, email, hashedPassword, rolId);
+            console.log("Creando usuario...");
             const user = await this.authRepository.CreateAsync(newUser);
             if(rolId === 1) {
-
+                console.log("Creando perfil de profesor...");
                 await this.teacherRepository.CreateAsync({UserId: user.UserId});
             }
-        
+            console.log("Usuario registrado con éxito");
             return { message: new SignUpSuccessfulException().message};
 
         } catch (error) {
+            console.error("Error en el registro:", error);
           throw error;
         }
 
@@ -51,19 +55,22 @@ class AuthService {
     async singIn(email, password) {
 
         try {
-
+            console.log("Buscando usuario...");
             const user = await User.findOne({ 
                 where: { Email: email },
                 include: Rol
             });
         
             if (!user) {
+                console.log("Usuario no encontrado");
                 return {message : new UserNotFoundException().message};
             }
-        
+            
+            console.log("Comparando contraseñas...");
             const isPasswordValid = await bcrypt.compare(password, user.Password);
 
             if (!isPasswordValid) {
+                console.log("Credenciales inválidas");
                 return {message : new InvalidCredentialsException().message};
             }
         
@@ -74,10 +81,12 @@ class AuthService {
             );
         
             const response = new LoginResponse(user, token);
+            console.log("Inicio de sesión exitoso");
         
             return response;
             
         } catch (error) {
+            console.error("Error en el inicio de sesión:", error);
             throw error;
         }
 

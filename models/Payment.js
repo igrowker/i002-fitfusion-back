@@ -12,15 +12,15 @@ const Payment = sequelize.define('Payment', {
     ClassId: {
         type: DataTypes.INTEGER,
         references: {
-        model: Class,
-        key: 'ClassId'
+            model: Class,
+            key: 'ClassId'
         }
     },
     UserId: {
         type: DataTypes.INTEGER,
         references: {
-        model: User,
-        key: 'UserId'
+            model: User,
+            key: 'UserId'
         }
     },
     Amount: {
@@ -30,9 +30,13 @@ const Payment = sequelize.define('Payment', {
     Status: {
         type: DataTypes.STRING(50),
         allowNull: false
-    }
+    },
+    PaymentIntentId: {
+        type: DataTypes.STRING(255), // Añadir el campo PaymentIntentId
+        allowNull: false,
+    },
 }, {
-  timestamps: false
+    timestamps: false
 });
 
 Payment.belongsTo(Class, { foreignKey: 'ClassId' });

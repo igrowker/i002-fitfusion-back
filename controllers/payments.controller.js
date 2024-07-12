@@ -1,33 +1,69 @@
 import PaymentsService from "../services/PaymentsService.js";
 import HttpStatusCode from "../enums/HttpStatusCode.js";
 import Payment from "../models/Payment.js";
+import StripeService from "../services/StripeService.js";
+
+// export const createPayment = async (req, res) => {
+//   try {
+//     const { ClassId, UserId, Amount, Status } = req.body;
+
+//     // Validación de entrada
+//     if (!ClassId || !UserId || !Amount || !Status) {
+//       console.log("Invalid input data:", req.body);
+//       return res
+//         .status(HttpStatusCode.BAD_REQUEST)
+//         .json({ message: "All fields are required" });
+//     }
+//     console.log("Valid input data:", { ClassId, UserId, Amount, Status });
+
+//     const payment = await PaymentsService.createPayment({
+//       ClassId,
+//       UserId,
+//       Amount,
+//       Status,
+//     });
+//     console.log("Payment created:", payment);
+//     return res.status(HttpStatusCode.CREATED).json(payment);
+//   } catch (error) {
+//     console.error("Error creating payment:", error);
+//     return res
+//       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+//       .json({ message: "Failed to create payment" });
+//   }
+// };
 
 export const createPayment = async (req, res) => {
   try {
-    const { ClassId, UserId, Amount, Status } = req.body;
+    const { ClassId, UserId, Amount } = req.body;
 
     // Validación de entrada
-    if (!ClassId || !UserId || !Amount || !Status) {
-      console.log("Invalid input data:", req.body);
+    if (!ClassId || !UserId || !Amount) {
       return res
         .status(HttpStatusCode.BAD_REQUEST)
-        .json({ message: "All fields are required" });
+        .json({ message: 'All fields are required' });
     }
-    console.log("Valid input data:", { ClassId, UserId, Amount, Status });
 
+    // Crear un PaymentIntent de Stripe
+    const paymentIntent = await StripeService.createPaymentIntent(Amount * 100); // Multiplica por 100 para convertir a centavos
+
+    // Crear un registro de pago en tu base de datos
     const payment = await PaymentsService.createPayment({
       ClassId,
       UserId,
       Amount,
-      Status,
+      Status: 'Pending', // Inicialmente marcado como pendiente
+      PaymentIntentId: paymentIntent.id, // Almacena el ID del PaymentIntent
     });
-    console.log("Payment created:", payment);
-    return res.status(HttpStatusCode.CREATED).json(payment);
+
+    return res.status(HttpStatusCode.CREATED).json({
+      payment,
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (error) {
-    console.error("Error creating payment:", error);
+    console.error('Error creating payment:', error);
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ message: "Failed to create payment" });
+      .json({ message: 'Failed to create payment' });
   }
 };
 
