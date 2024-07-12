@@ -70,7 +70,7 @@ class AuthService {
             const token = jwt.sign(
                 { userId: user.UserId, email: user.Email },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '24h' }
             );
         
             const response = new LoginResponse(user, token);

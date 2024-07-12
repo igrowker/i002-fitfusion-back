@@ -50,7 +50,7 @@ export async function getAllClasses(req, res) {
               attributes: ['Name'], // Atributo que deseas incluir
             },
           ],
-          attributes: ['ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
+          attributes: ['TeacherId', 'UserId' , 'ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
         },
         {
           model: LevelClass,
@@ -150,7 +150,7 @@ export async function getClassById(req, res) {
               attributes: ['Name'], // Atributo que deseas incluir
             },
           ],
-          attributes: ['ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
+          attributes: ['TeacherId', 'UserId' , 'ProfessionalTitle', 'Bio', 'YearsExperience'], // Ajusta los atributos que deseas incluir
         },
         {
           model: LevelClass,

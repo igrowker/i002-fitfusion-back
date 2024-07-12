@@ -5,5 +5,6 @@ import authMiddleware from '../middlewares/authMiddleware.js';
 const router = Router();
 
 router.post('/register', authMiddleware, teacher.createTeacher);
+router.get('/:id', authMiddleware, teacher.getOneTeacher);
 
 export default router;

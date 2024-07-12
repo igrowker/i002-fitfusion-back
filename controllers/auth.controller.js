@@ -16,6 +16,11 @@ export const singUp = async (req, res) => {
         }
 
         const result = await AuthService.singUp(name, email, password, rolId);
+
+        if(result.message === "El correo electrónico ya está registrado.") {
+            return res.status(HttpStatusCode.CONFLICT).json(result)
+        }
+
         return res.status(HttpStatusCode.CREATED).json(result);
         
     } catch (error) {
@@ -30,6 +35,9 @@ export const singIn = async (req, res) => {
 
     try {
         const loginResponse = await AuthService.singIn(email, password);
+        if(loginResponse.message === "Credenciales inválidas.") {
+            return res.status(HttpStatusCode.CONFLICT).json(loginResponse)
+        }
         return res.status(HttpStatusCode.OK).json(loginResponse);
     } catch (error) {
         return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: new  InternalServerErrorException().message});
