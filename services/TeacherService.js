@@ -4,6 +4,9 @@ import HttpStatusCode from '../enums/HttpStatusCode.js';
 import ExistingTeacherException from '../exceptions/Teacher/ExistingTeacherException.js';
 import TeacherCreationSuccessException from '../exceptions/Teacher/TeacherCreationSuccessException.js';
 import FailedCreateTeacherException from '../exceptions/Teacher/FailedCreateTeacherException.js';
+import TeacherNotFoundException from '../exceptions/Teacher/TeacherNotFoundException.js';
+import Teacher from '../models/Teacher.js';
+import User from '../models/User.js';
 
 class TeacherService {
 
@@ -28,6 +31,30 @@ class TeacherService {
             
         } catch (error) {
             return { status: HttpStatusCode.INTERNAL_SERVER_ERROR, message: new FailedCreateTeacherException().message};
+        }
+
+    }
+
+    async getOneTeacher(id) {
+
+        try {
+            const teacher = await Teacher.findOne({
+                where: { TeacherId: id },
+                include:  {
+                    model: User,
+                    attributes: ['Name' , 'Image'],
+                }
+            })
+
+            console.log('teacher' , !teacher)
+            if (!teacher) {
+                throw { status: HttpStatusCode.NOT_FOUND, message: 'Teacher not found' };
+            }
+
+            return teacher
+            
+        } catch (error) {
+            return { status: HttpStatusCode.INTERNAL_SERVER_ERROR, message: new TeacherNotFoundException().message};
         }
 
     }
