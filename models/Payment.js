@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../database/database.js';
 import Class from './Class.js';
 import User from './User.js';
+import ClassTime from './ClassTime.js';
 
 const Payment = sequelize.define('Payment', {
     Id: {
@@ -23,6 +24,17 @@ const Payment = sequelize.define('Payment', {
             key: 'UserId'
         }
     },
+    ClassTimeId: {
+        type: DataTypes.INTEGER,
+        references: {
+        model: ClassTime,
+        key: 'ClassTimeId'
+        }
+    }, 
+    ClassDate: {
+        type: DataTypes.DATE(10, 2),
+        allowNull: false
+    },
     Amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
@@ -41,6 +53,7 @@ const Payment = sequelize.define('Payment', {
 
 Payment.belongsTo(Class, { foreignKey: 'ClassId' });
 Payment.belongsTo(User, { foreignKey: 'UserId' });
+Payment.belongsTo(ClassTime, { foreignKey: 'ClassTimeId' });
 
 export default Payment;
 

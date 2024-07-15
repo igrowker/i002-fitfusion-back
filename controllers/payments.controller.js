@@ -5,7 +5,10 @@ import StripeService from "../services/StripeService.js";
 
 export const createPayment = async (req, res) => {
   try {
-    const { ClassId, UserId, Amount, Status } = req.body;
+    const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate  } = req.body;
+
+    const date = new Date(ClassDate);
+    const formatDate = date.toISOString().slice(0, 19).replace('T', ' ');
 
     // Validación de entrada
     if (!ClassId || !UserId || !Amount || !Status) {
@@ -21,6 +24,8 @@ export const createPayment = async (req, res) => {
       UserId,
       Amount,
       Status,
+      ClassTimeId,
+      ClassDate : formatDate
     });
     console.log("Payment created:", payment);
     return res.status(HttpStatusCode.CREATED).json(payment);
@@ -70,10 +75,13 @@ export const createPaymentStripe = async (req, res) => {
 export const getPaymentsUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const payments = Payment.findAll({
+    const payments = await Payment.findAll({
       where: {
         UserId: id,
       },
+      include : {
+        model: Class
+      }
     });
     if (!payments) {
       return res

@@ -56,7 +56,7 @@ const Class = sequelize.define('Class', {
         type: DataTypes.DECIMAL(10, 2)
     },
     Image: {
-        type: DataTypes.STRING(300),
+        type: DataTypes.STRING(700),
         allowNull: true
     },
 }, {
