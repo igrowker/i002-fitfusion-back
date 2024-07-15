@@ -4,7 +4,6 @@ import { sequelize } from '../database/database.js';
 const Rol = sequelize.define("Rol", {
   RolId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
   },
   Description: {
