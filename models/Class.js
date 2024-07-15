@@ -42,6 +42,9 @@ const Class = sequelize.define('Class', {
     Calories: {
         type: DataTypes.INTEGER
     },
+    Duration: {
+        type: DataTypes.INTEGER
+    },
     StatusId: {
         type: DataTypes.INTEGER,
         references: {

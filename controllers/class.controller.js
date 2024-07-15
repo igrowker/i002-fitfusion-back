@@ -112,7 +112,7 @@ export async function getClassesByDay (req, res) {
                         attributes: ['Description'],
                     },
                 ],
-                attributes: ['Title', 'Description', 'Calories', 'Price', 'Image'],
+                attributes: ['Title', 'Description', 'Calories', 'Price', 'Image', 'Duration'],
             },
             {
                 model: Weekday,

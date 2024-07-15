@@ -7,7 +7,7 @@ import { markClassAsCompleted } from "../controllers/completedClass.controller.j
 const router = Router();
 
 router.get('/getAllClasses', authMiddleware, classf.getAllClasses);
-router.get('/getClassesByDate', authMiddleware, classf.getClassesByDay);
+router.post('/getClassesByDate', authMiddleware, classf.getClassesByDay);
 router.post('/register', authMiddleware, createClassValidator, classf.createClass);
 router.get('/:id', authMiddleware, classf.getClassById)
 router.put('/:id', authMiddleware, classf.updateClassByID)
