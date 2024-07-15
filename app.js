@@ -12,6 +12,8 @@ import typeClassRoutes from './routes/typeClass.routes.js'
 import levelClassRutes from './routes/levelClas.routes.js'
 import paymentsRoutes from './routes/payments.routes.js'
 import servicesRoutes from './routes/services.routes.js'
+import physiotherapistRoutes from './routes/physiotherapist.routes.js'
+import nutricionistRoutes from './routes/nutricionist.routes.js'
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+app.use('/api/nutricionist', nutricionistRoutes);
+app.use('/api/physiotherapist', physiotherapistRoutes);
 app.use('/api/rol', rolsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
