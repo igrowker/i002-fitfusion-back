@@ -6,7 +6,6 @@ import sequelize from '../database/database.js';
 const Weekday = sequelize.define('Weekday', {
     WeekdayId: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         primaryKey: true
     },
     Name: {
