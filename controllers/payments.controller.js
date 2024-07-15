@@ -8,7 +8,7 @@ export const createPayment = async (req, res) => {
     const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate  } = req.body;
 
     const date = new Date(ClassDate);
-    const formatDate = date1.toISOString().slice(0, 19).replace('T', ' ');
+    const formatDate = date.toISOString().slice(0, 19).replace('T', ' ');
 
     // Validación de entrada
     if (!ClassId || !UserId || !Amount || !Status) {
