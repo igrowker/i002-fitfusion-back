@@ -35,6 +35,10 @@ const Payment = sequelize.define('Payment', {
         type: DataTypes.DATE(10, 2),
         allowNull: false
     },
+    ClassCompleted : {
+        type: DataTypes.BOOLEAN, 
+        defaultValue: false
+    },
     Amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
@@ -45,7 +49,7 @@ const Payment = sequelize.define('Payment', {
     },
     PaymentIntentId: {
         type: DataTypes.STRING(255), // Añadir el campo PaymentIntentId
-        allowNull: false,
+        allowNull: true,
     },
 }, {
     timestamps: false

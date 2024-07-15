@@ -12,6 +12,7 @@ import User from "../models/User.js";
 import Weekday from "../models/Weekday.js";
 import ClassTime from "../models/ClassTime.js";
 import ClassSchedule from "../models/ClassSchedule.js";
+import Payment from "../models/Payment.js";
 
 export const createClass = async (req, res) => {
   const { title, description, teacherId, levelClassId, typeClassId, calories, statusId, price } = req.body;
@@ -211,6 +212,29 @@ export async function deleteClassByID(req, res){
     }else{
       await classd.destroy()
       return res.status(HttpStatusCode.OK).json({status:"ok", message:"Class deleted"})
+    }
+  } catch (error) {
+    return res
+      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+      .json({ message: "Internal server error" });
+  }
+}
+
+
+export async function markClassAsCompleted(req,res) {
+  try {
+
+    const { paimentId } = req.body;
+
+    const payment = await Payment.findByPk(paimentId);
+
+    if (!payment) {
+      return res
+        .status(HttpStatusCode.NOT_FOUND)
+        .json({ message: "Payment update Not Found" });
+    }else{
+      const newPayment = await payment.update({ClassCompleted : 1 });
+      return res.status(HttpStatusCode.OK).json(newPayment)
     }
   } catch (error) {
     return res

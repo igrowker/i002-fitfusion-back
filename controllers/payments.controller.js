@@ -2,6 +2,7 @@ import PaymentsService from "../services/PaymentsService.js";
 import HttpStatusCode from "../enums/HttpStatusCode.js";
 import Payment from "../models/Payment.js";
 import StripeService from "../services/StripeService.js";
+import Class from "../models/Class.js";
 
 export const createPayment = async (req, res) => {
   try {
