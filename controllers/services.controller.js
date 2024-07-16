@@ -26,7 +26,7 @@ export const sendEmail = async (req, res) => {
       
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.log( 'EMAIL ERROR: ' ,  error)
+            
             return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: 'Error sending email' });
           }
           res.status(HttpStatusCode.OK).send('Email sent: ' + info.response);
