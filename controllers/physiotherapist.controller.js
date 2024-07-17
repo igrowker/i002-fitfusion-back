@@ -16,10 +16,10 @@ export const GetAllPhysiotherapist = async (req, res) => {
 
 export const getOnePhysiotherapist = async (req, res) => {
     const { id } = req.params;
-    console.log("traigo el id", id)
+    
     try {
         const result = await physiotherapist.getOnePhysiotherapist(Number(id));
-        console.log("traigo el resultado", result)
+        
         return res.status(HttpStatusCode.OK).json(result);
     } catch (error) {
         return res
