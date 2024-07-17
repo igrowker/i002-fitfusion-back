@@ -10,6 +10,7 @@ import SignUpSuccessfulException from '../exceptions/Auth/SignUpSuccessfulExcept
 import UserNotFoundException from '../exceptions/User/UserNotFoundException.js';
 import InvalidCredentialsException from '../exceptions/Auth/InvalidCredentialsException.js'
 import TeacherRepository from '../Repositories/TeacherRepository.js';
+import UserInactiveException from '../exceptions/User/UserInactiveException.js';
 
 const saltRounds = 10;
 
@@ -27,8 +28,7 @@ class AuthService {
             
             const existingUser = await this.authRepository.VerifyDataExistenceAsync({ Email: email });
 
-            if (existingUser) {
-                
+            if (existingUser && existingUser.IsActive === true) {
                 return {message: new ExistingUserException().message};
             }
             
@@ -55,12 +55,17 @@ class AuthService {
 
         try {
             const user = await User.findOne({ 
-                where: { Email: email },
+                where: { 
+                    Email: email,
+                },
                 include: Rol
             });
         
             if (!user) {
                 return {message : new UserNotFoundException().message};
+            } 
+            if(!user.IsActive) {
+                return {message : new UserInactiveException().message};
             }
             
             const isPasswordValid = await bcrypt.compare(password, user.Password);

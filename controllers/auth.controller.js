@@ -41,7 +41,12 @@ export const singIn = async (req, res) => {
         const loginResponse = await AuthService.singIn(email, password);
         if(loginResponse.message === "Credenciales inválidas.") {
             return res.status(HttpStatusCode.CONFLICT).json(loginResponse)
+        } else if (loginResponse.message === 'Usuario no encontrado.') {
+            return res.status(HttpStatusCode.CONFLICT).json(loginResponse)
+        } else if (loginResponse.message === 'Usuario inactivo.') {
+            return res.status(HttpStatusCode.CONFLICT).json(loginResponse)
         }
+
         return res.status(HttpStatusCode.OK).json(loginResponse);
     } catch (error) {
         console.error("Error interno del servidor en singIn:", error);
