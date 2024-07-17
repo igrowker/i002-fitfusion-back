@@ -86,6 +86,18 @@ class UserRepository {
             return {user, teacher}
         }
     }
+
+    async deleteUser(userId) {
+        const user = await User.findByPk(userId);
+        if(!user) {
+            throw new Error('User not found');
+        }
+
+        // Actualizar IsActive a false
+        user.IsActive = false;
+        await user.save();
+        return user;
+    }
 }
 
 export default new UserRepository();

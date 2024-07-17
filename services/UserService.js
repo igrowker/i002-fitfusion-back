@@ -17,6 +17,14 @@ class UserService {
         }
         return user;
     }
+
+    async deleteUserProfile(userId) {
+        const user = await UserRepository.deleteUser(userId);
+        if (!user) {
+            throw { status: HttpStatusCode.NOT_FOUND, message: 'User not found' };
+            }
+        return user;    
+    }
 }
 
 export default new UserService();
