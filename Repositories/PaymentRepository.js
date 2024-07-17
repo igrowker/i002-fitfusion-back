@@ -15,8 +15,6 @@ class PaymentRepository {
     }
 
     async findPaymentForClassAndUser(userId, classId) {
-        console.log("este es user:", userId, "esta es clase:", classId)
-       
         return await Payment.findOne({
             where: {
                 ClassId: classId,
