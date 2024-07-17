@@ -29,3 +29,16 @@ export const updateUserProfile = async (req, res) => {
         return res.status(error.status || HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: error.message || 'Internal server error' });
     }
 };
+
+export const deleteUserProfile = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const user = await UserService.deleteUserProfile(userId);
+        if (!user) {
+            return res.status(HttpStatusCode.NOT_FOUND).json({ message: 'User not found' });
+        }
+        return res.status(HttpStatusCode.OK).json({ message: 'User deleted successfully', user });
+    } catch (error) {
+        return res.status(error.status || HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: error.message || 'Internal server error' });
+    }
+};
