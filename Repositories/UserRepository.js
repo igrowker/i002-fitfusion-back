@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import Teacher from '../models/Teacher.js';
+import bcrypt from 'bcrypt';
 
 class UserRepository {
     async findById(userId) {
@@ -52,6 +53,24 @@ class UserRepository {
 
     async updateUser(userId, updatedData) {
         const user = await User.findByPk(userId);
+
+        const isPasswordValid = await bcrypt.compare(updatedData.Password, user.Password);
+        
+        if(!isPasswordValid){
+            throw new Error('La contraseña no es valida')
+        }
+
+        let hashedPassword 
+        const saltRounds = 10;
+        const regex = new RegExp('^(?=.*[0-9])(?=.*[a-z]).{8,}$')
+
+        if(regex.test(updatedData.NewPassword)){
+            hashedPassword = await bcrypt.hash(updatedData.NewPassword, saltRounds);
+        } else {
+            hashedPassword = await bcrypt.hash(updatedData.Password, saltRounds);
+        }
+
+        updatedData.Password = hashedPassword.trim()
 
         if (user && user.RolId === 2) {
             await user.update(updatedData);

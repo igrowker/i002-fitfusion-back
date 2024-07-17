@@ -19,6 +19,7 @@ export const updateUserProfile = async (req, res) => {
     try {
         const userId = req.user.userId;
         const updatedData = req.body;
+        console.log('BODY DEL REQUEST' , updatedData)
         const user = await UserService.updateUserProfile(userId, updatedData);
         if (!user) {
             return res.status(HttpStatusCode.NOT_FOUND).json({ message: 'User not found' });

@@ -10,6 +10,7 @@ import SignUpSuccessfulException from '../exceptions/Auth/SignUpSuccessfulExcept
 import UserNotFoundException from '../exceptions/User/UserNotFoundException.js';
 import InvalidCredentialsException from '../exceptions/Auth/InvalidCredentialsException.js'
 import TeacherRepository from '../Repositories/TeacherRepository.js';
+import UserInactiveException from '../exceptions/User/UserInactiveException.js';
 
 const saltRounds = 10;
 
@@ -27,7 +28,7 @@ class AuthService {
             console.log("Verificando existencia de usuario...");
             const existingUser = await this.authRepository.VerifyDataExistenceAsync({ Email: email });
 
-            if (existingUser) {
+            if (existingUser && existingUser.IsActive === true) {
                 console.log("Usuario existente encontrado");
                 return {message: new ExistingUserException().message};
             }
@@ -57,13 +58,18 @@ class AuthService {
         try {
             console.log("Buscando usuario...");
             const user = await User.findOne({ 
-                where: { Email: email },
+                where: { 
+                    Email: email,
+                },
                 include: Rol
             });
         
             if (!user) {
                 console.log("Usuario no encontrado");
                 return {message : new UserNotFoundException().message};
+            } 
+            if(!user.IsActive) {
+                return {message : new UserInactiveException().message};
             }
             
             console.log("Comparando contraseñas...");

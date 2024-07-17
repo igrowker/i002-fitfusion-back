@@ -1,6 +1,7 @@
 
 class LoginResponse {
   constructor(user, token) {
+    this.userId = user.UserId
     this.name = user.Name;
     this.email = user.Email;
     this.rolId = user.RolId ?? null;

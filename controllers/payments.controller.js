@@ -3,6 +3,7 @@ import HttpStatusCode from "../enums/HttpStatusCode.js";
 import Payment from "../models/Payment.js";
 import StripeService from "../services/StripeService.js";
 import Class from "../models/Class.js";
+import ClassTime from "../models/ClassTime.js";
 
 export const createPayment = async (req, res) => {
   try {
@@ -80,9 +81,15 @@ export const getPaymentsUser = async (req, res) => {
       where: {
         UserId: id,
       },
-      include : {
-        model: Class
-      }
+      include : [
+        {
+          model: Class
+        },
+        {
+          model : ClassTime,
+          attributes : ['Time']
+        }
+      ] 
     });
     if (!payments) {
       return res
