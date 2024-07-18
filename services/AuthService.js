@@ -57,6 +57,7 @@ class AuthService {
             const user = await User.findOne({ 
                 where: { 
                     Email: email,
+                    IsActive : true
                 },
                 include: Rol
             });

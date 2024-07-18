@@ -32,7 +32,7 @@ const Payment = sequelize.define('Payment', {
         }
     }, 
     ClassDate: {
-        type: DataTypes.DATE(10, 2),
+        type: DataTypes.DATE(6, 2),
         allowNull: false
     },
     ClassCompleted : {
