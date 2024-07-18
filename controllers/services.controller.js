@@ -19,8 +19,8 @@ export const sendEmail = async (req, res) => {
       
         const mailOptions = {
           from: email,
-          to,
-          subject: `${subject} : CONTACT EMAIL FITFUSION`,
+          to : 'nmacenco@hotmail.com',
+          subject: `${subject} : CONTACT EMAIL FITFUSION ${to}`,
           text,
         };
       

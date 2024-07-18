@@ -77,13 +77,16 @@ class UserRepository {
             return user;
 
         } else if (user && user.RolId === 1) {
-            const {TeacherId} = updatedData.teacherInfo
-            const teacher = await Teacher.findByPk(TeacherId)
-
             await user.update(updatedData);
-            await teacher.update(updatedData.teacherInfo)
-
-            return {user, teacher}
+            if(updatedData.teacherInfo.TeacherId){
+                const {TeacherId} = updatedData.teacherInfo
+                const teacher = await Teacher.findByPk(TeacherId)
+    
+                await teacher.update(updatedData.teacherInfo)
+                return {user, teacher}
+            }
+            
+            return {user}
         }
     }
 
