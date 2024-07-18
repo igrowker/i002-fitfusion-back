@@ -1,37 +1,33 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Deploy to Render
 
 on:
   push:
-    branches: [ "testing" ]
+    branches:
+      - testing
   pull_request:
-    branches: [ "testing" ]
+    branches:
+      - testing
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - name: Install Render CLI
-      run: curl -fsSL https://render.com/static/cli/install.sh | bash
-    - name: Deploy to Render
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      run: |
-        render login --api-key ${{ secrets.RENDER_API_KEY }}
-        render deploy --service-id i002-fitfusion-back
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Homebrew
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      - name: Install Render CLI
+        run: |
+          brew tap render-oss/render
+          brew install render
+
+      - name: Deploy to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          render login --api-key ${{ secrets.RENDER_API_KEY }}
+          render deploy --service-id i002-fitfusion-back
