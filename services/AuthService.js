@@ -26,9 +26,9 @@ class AuthService {
 
         try {
             
-            const existingUser = await this.authRepository.VerifyDataExistenceAsync({ Email: email });
+            const existingUser = await this.authRepository.VerifyDataExistenceAsync({ Email: email , IsActive: 1 });
 
-            if (existingUser && existingUser.IsActive === true) {
+            if (existingUser ) {
                 return {message: new ExistingUserException().message};
             }
             
