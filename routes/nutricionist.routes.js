@@ -5,6 +5,6 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 const router = Router();
 
 router.get('/getAllNutricionist', authMiddleware, GetAllNutricionist);
-router.get('/:id', authMiddleware, getOneNutricionist);
+router.get('/getNutricionist/:id', authMiddleware, getOneNutricionist);
 
 export default router;
