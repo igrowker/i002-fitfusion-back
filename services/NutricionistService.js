@@ -30,7 +30,7 @@ class NutricionistService {
             
             return nutricionist;
         } catch (error) {
-            return { status: HttpStatusCode.INTERNAL_SERVER_ERROR, message: new NutricionistNotFoundException().message};
+            return { status: HttpStatusCode.NOT_FOUND, message: new NutricionistNotFoundException().message};
         }
     }
 } 
