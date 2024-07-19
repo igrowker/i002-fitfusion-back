@@ -21,7 +21,6 @@ class PaymentRepository {
                 UserId: userId,
                 ClassTimeId: classTimeId,
                 ClassDate: classDate,
-                Status: 'Complete',  // Asumiendo que el estado "Completed" indica que el pago está realizado
             }
         });
     }

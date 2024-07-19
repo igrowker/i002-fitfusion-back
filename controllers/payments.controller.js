@@ -35,12 +35,12 @@ export const createPayment = async (req, res) => {
     console.error("Error creating payment:", error);
     if(error.status === HttpStatusCode.CONFLICT) {
       return res
-        .status(HttpStatusCode.CONFLICT)
-        .json({ message: error.message });
+      .status(HttpStatusCode.CONFLICT)
+      .json({ message: error.message });
     }
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ message: "Failed to create payment" });
+      .json({ message: 'Clase ya reservada por le usuario' });
   }
 };
 
