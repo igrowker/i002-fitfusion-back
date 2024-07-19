@@ -13,13 +13,14 @@ class PaymentRepository {
             throw error; // Re-lanza el error para que el servicio lo maneje
         }
     }
-
-    async findPaymentForClassAndUser(userId, classId) {
+    
+    async findPaymentForClassAndUser(userId, classId, classTimeId, classDate) {
         return await Payment.findOne({
             where: {
                 ClassId: classId,
                 UserId: userId,
-                Status: 'Complete',  // Asumiendo que el estado "Completed" indica que el pago está realizado
+                ClassTimeId: classTimeId,
+                ClassDate: classDate,
             }
         });
     }
