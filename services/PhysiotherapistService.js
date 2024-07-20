@@ -30,7 +30,7 @@ class PhysiotherapistService {
 
             return physiotherapist;
         } catch (error) {
-            return { status: HttpStatusCode.INTERNAL_SERVER_ERROR, message: new PhysiotherapistNotFoundException().message};
+            return { status: HttpStatusCode.NOT_FOUND, message: new PhysiotherapistNotFoundException().message};
         }
     }
 }

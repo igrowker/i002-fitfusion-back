@@ -19,6 +19,9 @@ export const getOneNutricionist = async (req, res) => {
 
     try {
         const result = await nutricionist.getOneNutricionist(Number(id));
+        if(result.message = 'Nutricionista no encontrado.'){
+            return res.status(HttpStatusCode.NOT_FOUND).json(result);
+        }
         return res.status(HttpStatusCode.OK).json(result);
     } catch (error) {
         return res

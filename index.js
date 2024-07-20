@@ -17,6 +17,8 @@ import './models/TypeClass.js'
 import './models/UserClass.js'
 import './models/Weekday.js'
 import './models/ClassSchedule.js'
+import './models/ClassTime.js'
+import './models/CompletedClass.js'
 
 
 const serverPort = process.env.serverPort;

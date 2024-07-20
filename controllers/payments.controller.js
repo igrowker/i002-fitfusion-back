@@ -13,7 +13,7 @@ export const createPayment = async (req, res) => {
     const formatDate = date.toISOString().slice(0, 19).replace('T', ' ');
 
     // Validación de entrada
-    if (!ClassId || !UserId || !Amount || !Status) {
+    if (!ClassId || !UserId || !Amount || !Status || !ClassTimeId || !ClassDate) {
       
       return res
         .status(HttpStatusCode.BAD_REQUEST)
@@ -33,9 +33,14 @@ export const createPayment = async (req, res) => {
     return res.status(HttpStatusCode.CREATED).json(payment);
   } catch (error) {
     console.error("Error creating payment:", error);
+    if(error.status === HttpStatusCode.CONFLICT) {
+      return res
+      .status(HttpStatusCode.CONFLICT)
+      .json({ message: error.message });
+    }
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ message: "Failed to create payment" });
+      .json({ message: 'Clase ya reservada por le usuario' });
   }
 };
 

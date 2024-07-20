@@ -29,7 +29,7 @@ export const sendEmail = async (req, res) => {
             
             return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: 'Error sending email' });
           }
-          res.status(HttpStatusCode.OK).send('Email sent: ' + info.response);
+          res.status(HttpStatusCode.OK).json('Email sent: ' + info.response);
         });
       
 
