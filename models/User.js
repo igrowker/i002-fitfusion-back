@@ -67,7 +67,7 @@ const User = sequelize.define('User', {
     defaultValue: true,
   },
   Image: {
-    type: DataTypes.STRING(700),
+    type: DataTypes.TEXT,
     allowNull: true
   },
   Calories: {
