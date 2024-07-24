@@ -4,16 +4,17 @@ import Payment from "../models/Payment.js";
 import StripeService from "../services/StripeService.js";
 import Class from "../models/Class.js";
 import ClassTime from "../models/ClassTime.js";
-
+import { sendPurchaseConfirmationEmail } from "./services.controller.js";
+import User from "../models/User.js";
 export const createPayment = async (req, res) => {
   try {
-    const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate  } = req.body;
+    const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate, userEmail  } = req.body;
 
     const date = new Date(ClassDate);
     const formatDate = date.toISOString().slice(0, 19).replace('T', ' ');
 
     // Validación de entrada
-    if (!ClassId || !UserId || !Amount || !Status || !ClassTimeId || !ClassDate) {
+    if (!ClassId || !UserId || !Amount || !Status || !ClassTimeId || !ClassDate || !userEmail) {
       
       return res
         .status(HttpStatusCode.BAD_REQUEST)
@@ -29,6 +30,9 @@ export const createPayment = async (req, res) => {
       ClassTimeId,
       ClassDate : formatDate
     });
+
+      // Enviar correo de confirmación de pago
+      await sendPurchaseConfirmationEmail(userEmail, payment);
     
     return res.status(HttpStatusCode.CREATED).json(payment);
   } catch (error) {
