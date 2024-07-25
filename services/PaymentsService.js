@@ -11,7 +11,6 @@ class PaymentService {
             if(existingPayment) {
                 throw { status: HttpStatusCode.CONFLICT, message: 'Clase ya reservada por le usuario'};
             }
-
             return await PaymentRepository.create(paymentData);
         } catch (error) {
             console.error('Error in createPayment:', error);
