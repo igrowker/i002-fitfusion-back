@@ -32,7 +32,8 @@ export const createPayment = async (req, res) => {
       ClassDate: formattedDate
     });
 
-    // Obtener detalles de la clase
+    try {
+          // Obtener detalles de la clase
     const classDetails = await Class.findByPk(ClassId);
 
     // Enviar correo de confirmación
@@ -51,6 +52,10 @@ export const createPayment = async (req, res) => {
       Status,
       Amount
     });
+    } catch (error) {
+      console.log(error)
+    }
+
 
     return res.status(HttpStatusCode.CREATED).json(payment);
   } catch (error) {

@@ -73,6 +73,6 @@ export const sendPurchaseConfirmationEmail = async (userEmail, payment) => {
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: 'Error sending email' });
+    console.log(error)
   }
 };
