@@ -4,22 +4,24 @@ import Payment from "../models/Payment.js";
 import StripeService from "../services/StripeService.js";
 import Class from "../models/Class.js";
 import ClassTime from "../models/ClassTime.js";
+import { sendPurchaseConfirmationEmail } from "./services.controller.js";
 
 export const createPayment = async (req, res) => {
   try {
-    const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate  } = req.body;
+    const { ClassId, UserId, Amount, Status, ClassTimeId, ClassDate } = req.body;
+    const userEmail = req.user.email;
 
+    // Validar fecha
     const date = new Date(ClassDate);
-    const formatDate = date.toISOString().slice(0, 19).replace('T', ' ');
+    if (isNaN(date.getTime())) {
+      return res.status(HttpStatusCode.BAD_REQUEST).json({ message: "Invalid ClassDate" });
+    }
+    const formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
 
     // Validación de entrada
     if (!ClassId || !UserId || !Amount || !Status || !ClassTimeId || !ClassDate) {
-      
-      return res
-        .status(HttpStatusCode.BAD_REQUEST)
-        .json({ message: "All fields are required" });
+      return res.status(HttpStatusCode.BAD_REQUEST).json({ message: "All fields are required" });
     }
-    
 
     const payment = await PaymentsService.createPayment({
       ClassId,
@@ -27,20 +29,36 @@ export const createPayment = async (req, res) => {
       Amount,
       Status,
       ClassTimeId,
-      ClassDate : formatDate
+      ClassDate: formattedDate
     });
-    
+
+    // Obtener detalles de la clase
+    const classDetails = await Class.findByPk(ClassId);
+
+    // Enviar correo de confirmación
+    await sendPurchaseConfirmationEmail(userEmail, {
+      ...payment,
+      ClassId,
+      ClassTitle: classDetails.Title,
+      ClassDate: date.toLocaleString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }),
+      Status,
+      Amount
+    });
+
     return res.status(HttpStatusCode.CREATED).json(payment);
   } catch (error) {
     console.error("Error creating payment:", error);
-    if(error.status === HttpStatusCode.CONFLICT) {
-      return res
-      .status(HttpStatusCode.CONFLICT)
-      .json({ message: error.message });
+    if (error.status === HttpStatusCode.CONFLICT) {
+      return res.status(HttpStatusCode.CONFLICT).json({ message: error.message });
     }
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Clase ya reservada por le usuario' });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: 'Clase ya reservada por el usuario' });
   }
 };
 
