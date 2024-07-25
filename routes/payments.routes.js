@@ -4,8 +4,8 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-// router.post('/', authMiddleware, createPayment);
-router.post('/', createPayment);
+router.post('/', authMiddleware, createPayment);
+// router.post('/', createPayment);
 router.post('/stripe', authMiddleware, createPaymentStripe);
 router.get('/:id', authMiddleware, getPaymentsUser);
 

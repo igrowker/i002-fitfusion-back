@@ -49,6 +49,18 @@ export const sendPurchaseConfirmationEmail = async (userEmail, payment) => {
       pass: emailPass,
     },
   });
+
+    // // Formatear la fecha de la clase
+    // const date = new Date(payment.ClassDate);
+    // const formattedDate = date.toLocaleString('es-ES', {
+    //   year: 'numeric',
+    //   month: 'long',
+    //   day: 'numeric',
+    //   hour: 'numeric',
+    //   minute: 'numeric',
+    //   second: 'numeric'
+    // });
+
   const mailOptions = {
     from: email,
     to: userEmail,
@@ -59,7 +71,8 @@ export const sendPurchaseConfirmationEmail = async (userEmail, payment) => {
         <p>Hola,</p>
         <p>Gracias por tu pago. Aquí están los detalles de tu clase:</p>
         <ul>
-          <li>ID de la Clase: ${payment.ClassId}</li>
+            <li>ID de la Clase: ${payment.ClassId}</li>
+          <li>Nombre de la Clase: ${payment.ClassTitle}</li>
           <li>Fecha de la Clase: ${payment.ClassDate}</li>
           <li>Estado del Pago: ${payment.Status}</li>
           <li>Total: ${payment.Amount}</li>
