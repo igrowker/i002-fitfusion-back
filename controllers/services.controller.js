@@ -50,17 +50,6 @@ export const sendPurchaseConfirmationEmail = async (userEmail, payment) => {
     },
   });
 
-    // // Formatear la fecha de la clase
-    // const date = new Date(payment.ClassDate);
-    // const formattedDate = date.toLocaleString('es-ES', {
-    //   year: 'numeric',
-    //   month: 'long',
-    //   day: 'numeric',
-    //   hour: 'numeric',
-    //   minute: 'numeric',
-    //   second: 'numeric'
-    // });
-
   const mailOptions = {
     from: email,
     to: userEmail,
